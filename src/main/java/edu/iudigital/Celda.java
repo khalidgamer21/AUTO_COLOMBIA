@@ -2,12 +2,12 @@ package edu.iudigital;
 
 public class Celda {
     private int numero;
-    private boolean ocupada;
+    private String ocupada;
 
     public Celda() {
     }
 
-    public Celda(int numero, boolean ocupada) {
+    public Celda(int numero, String ocupada) {
         this.numero = numero;
         this.ocupada = ocupada;
     }
@@ -20,11 +20,11 @@ public class Celda {
         this.numero = numero;
     }
 
-    public boolean isOcupada() {
+    public String getOcupada() {
         return ocupada;
     }
 
-    public void setOcupada(boolean ocupada) {
+    public void setOcupada(String ocupada) {
         this.ocupada = ocupada;
     }
 

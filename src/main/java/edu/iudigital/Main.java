@@ -219,8 +219,8 @@ public class Main {
                         break;
                     }
 
-                    System.out.print("¿Está ocupada? (true/false): ");
-                    boolean ocupada = sc.nextBoolean();
+                    System.out.print("¿Está ocupada? (Si/No): ");
+                    String ocupada = sc.next();
                     sc.nextLine();
 
                     Celda celda = new Celda(numero, ocupada);
