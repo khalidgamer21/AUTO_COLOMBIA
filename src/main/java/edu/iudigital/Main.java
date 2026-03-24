@@ -219,7 +219,7 @@ public class Main {
                         break;
                     }
 
-                    System.out.print("¿Está ocupada? (Si/No): ");
+                    System.out.print("¿Está ocupada? (1.OCUPADO/0.VACIO): ");
                     String ocupada = sc.next();
                     sc.nextLine();
 
