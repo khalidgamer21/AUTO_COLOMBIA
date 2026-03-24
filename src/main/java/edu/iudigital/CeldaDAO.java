@@ -60,7 +60,7 @@ public class CeldaDAO {
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, celda.getNumero());
-            ps.setBoolean(2, celda.isOcupada());
+            ps.setString(2, celda.getOcupada().toString());
 
             ps.executeUpdate();
             System.out.println("Celda registrada correctamente.");
