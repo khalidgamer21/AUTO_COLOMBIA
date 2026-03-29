@@ -1,5 +1,10 @@
 package edu.iudigital;
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class RegistroDAO {
@@ -57,6 +62,7 @@ public class RegistroDAO {
 
         return null;
     }
+
     public void registrarSalida(String placa, LocalDateTime salida) {
         String sql = "UPDATE registro SET salida = ? WHERE placa_vehiculo = ? AND salida IS NULL";
 
@@ -79,6 +85,48 @@ public class RegistroDAO {
         }
     }
 
+    public void verVehiculosEnParqueaderoConPagos() {
+        String sql = """
+                SELECT v.placa,
+                       r.numero_celda,
+                       p.valor,
+                       p.fecha_pago,
+                       p.estado
+                FROM registro r
+                JOIN vehiculo v ON r.placa_vehiculo = v.placa
+                LEFT JOIN pago p ON p.id = (
+                    SELECT id
+                    FROM pago
+                    WHERE placa_vehiculo = v.placa
+                    ORDER BY fecha_pago DESC, id DESC
+                    LIMIT 1
+                )
+                WHERE r.salida IS NULL
+                """;
 
+        try (Connection con = ConexionBD.conectar();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
+            System.out.println("\n=== VEHÍCULOS EN EL PARQUEADERO ===");
+            boolean hayDatos = false;
+
+            while (rs.next()) {
+                hayDatos = true;
+
+                System.out.println("Placa: " + rs.getString("placa")
+                        + " | Celda: " + rs.getInt("numero_celda")
+                        + " | Valor: " + rs.getDouble("valor")
+                        + " | Fecha pago: " + rs.getDate("fecha_pago")
+                        + " | Estado: " + rs.getString("estado"));
+            }
+
+            if (!hayDatos) {
+                System.out.println("No hay vehículos dentro del parqueadero");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al consultar vehículos en parqueadero: " + e.getMessage());
+        }
+    }
 }
